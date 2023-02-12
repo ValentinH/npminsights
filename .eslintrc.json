@@ -1,3 +1,33 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended", "prettier", "next/core-web-vitals"],
+  "overrides": [
+    {
+      "files": ["**/*.ts?(x)"],
+      "extends": ["plugin:@typescript-eslint/recommended", "plugin:import/typescript"],
+      "plugins": ["@typescript-eslint", "import"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "import/no-extraneous-dependencies": "error",
+        "import/order": [
+          "error",
+          {
+            "alphabetize": {
+              "order": "asc"
+            },
+            "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]],
+            "newlines-between": "never",
+            "pathGroups": [
+              {
+                "group": "internal",
+                "pattern": "#src/**"
+              }
+            ],
+            "pathGroupsExcludedImportTypes": ["builtin"]
+          }
+        ],
+        "no-console": ["error", { "allow": ["warn", "error"] }]
+      }
+    }
+  ]
 }
