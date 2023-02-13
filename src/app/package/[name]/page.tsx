@@ -1,5 +1,8 @@
 import clsx from 'clsx';
-import * as npmApi from '#src/app/(utils)/npm-api';
+import React from 'react';
+import { DownloadsChart } from '#src/app/(common)/components/DownloadsChart';
+import * as npmApi from '#src/app/(common)/utils/npm-api';
+import { NpmDailyDownloads } from '#src/app/(common)/utils/npm-api/types';
 
 export const dynamicParams = true;
 
@@ -11,28 +14,110 @@ export async function generateStaticParams() {
   ];
 }
 
-async function getData(packageName: string) {
-  const data = await npmApi.getPackageInsights(packageName);
-  return data;
-}
-
 type PackageProps = {
   params: { name: string };
 };
 
 export default async function Package({ params }: PackageProps) {
   const { name } = params;
-  const data = await getData(name);
+  const data = await npmApi.getPackageInsights(name);
+
+  const firstMonday = data.allDailyDownloads.findIndex((d) => new Date(d.day).getDay() === 1);
+  const allWeeklyDownloads = data.allDailyDownloads
+    .slice(firstMonday)
+    .reduce<NpmDailyDownloads[]>((acc, curr) => {
+      const isMonday = new Date(curr.day).getDay() === 1;
+      if (isMonday) {
+        return [
+          ...acc,
+          {
+            day: curr.day,
+            downloads: curr.downloads,
+          },
+        ];
+      }
+
+      const last = acc[acc.length - 1];
+      last.downloads += curr.downloads;
+      return acc;
+    }, []);
+
+  const allMonthlyDownloads = data.allDailyDownloads.reduce<NpmDailyDownloads[]>((acc, curr) => {
+    const last = acc[acc.length - 1];
+    const isNewMonth = !last || new Date(curr.day).getMonth() !== new Date(last.day).getMonth();
+    if (isNewMonth) {
+      return [
+        ...acc,
+        {
+          day: curr.day,
+          downloads: curr.downloads,
+        },
+      ];
+    }
+
+    last.downloads += curr.downloads;
+    return acc;
+  }, []);
+
+  const allYearlyDownloads = data.allDailyDownloads.reduce<NpmDailyDownloads[]>((acc, curr) => {
+    const last = acc[acc.length - 1];
+    const isNewYear =
+      !last || new Date(curr.day).getFullYear() !== new Date(last.day).getFullYear();
+    if (isNewYear) {
+      return [
+        ...acc,
+        {
+          day: curr.day,
+          downloads: curr.downloads,
+        },
+      ];
+    }
+
+    last.downloads += curr.downloads;
+    return acc;
+  }, []);
+
   return (
     <>
       <h1 className="my-8 text-center text-4xl">{name} insights</h1>
-      <section>
+      <section className="mb-8">
         <h2 className="mb-4 text-2xl">Downloads</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card title="Last day" value={data.lastDay} previousValue={data.lastDayPreviousWeek} />
           <Card title="Last week" value={data.lastWeek} previousValue={data.previousWeek} />
           <Card title="Last month" value={data.lastMonth} previousValue={data.previousMonth} />
           <Card title="Last year" value={data.lastYear} previousValue={data.previousYear} />
+        </div>
+      </section>
+      <section className="mb-8">
+        <h2 className="mb-4 text-2xl">History</h2>
+        <div className="mb-8 h-96 w-full">
+          <DownloadsChart
+            downloads={data.allDailyDownloads}
+            title="Daily downloads"
+            dateFormat="PP"
+          />
+        </div>
+        <div className="mb-8 h-96 w-full">
+          <DownloadsChart
+            downloads={allWeeklyDownloads}
+            title="Weekly downloads"
+            dateFormat="yyyy-'W'ww"
+          />
+        </div>
+        <div className="mb-8 h-96 w-full">
+          <DownloadsChart
+            downloads={allMonthlyDownloads}
+            title="Monthly downloads"
+            dateFormat="MMMM yyyy"
+          />
+        </div>
+        <div className="mb-8 h-96 w-full">
+          <DownloadsChart
+            downloads={allYearlyDownloads}
+            title="Yearly downloads"
+            dateFormat="yyyy"
+          />
         </div>
       </section>
     </>
