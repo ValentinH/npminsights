@@ -91,34 +91,32 @@ export default async function Package({ params }: PackageProps) {
       </section>
       <section className="mb-8">
         <h2 className="mb-4 text-2xl">History</h2>
-        <div className="mb-8 h-96 w-full">
-          <DownloadsChart
-            downloads={data.allDailyDownloads}
-            title="Daily downloads"
-            dateFormat="PP"
-          />
-        </div>
-        <div className="mb-8 h-96 w-full">
-          <DownloadsChart
-            downloads={allWeeklyDownloads}
-            title="Weekly downloads"
-            dateFormat="yyyy-'W'ww"
-          />
-        </div>
-        <div className="mb-8 h-96 w-full">
-          <DownloadsChart
-            downloads={allMonthlyDownloads}
-            title="Monthly downloads"
-            dateFormat="MMMM yyyy"
-          />
-        </div>
-        <div className="mb-8 h-96 w-full">
-          <DownloadsChart
-            downloads={allYearlyDownloads}
-            title="Yearly downloads"
-            dateFormat="yyyy"
-          />
-        </div>
+        <DownloadsChart
+          downloads={data.allDailyDownloads}
+          title="Daily downloads"
+          dateFormat="PP"
+          className="mb-8"
+        />
+        <DownloadsChart
+          downloads={allWeeklyDownloads}
+          title="Weekly downloads"
+          dateFormat="yyyy-'W'ww"
+          className="mb-8"
+        />
+        <DownloadsChart
+          downloads={allMonthlyDownloads}
+          title="Monthly downloads"
+          dateFormat="MMM yyyy"
+          className="mb-8"
+          chartType="bars"
+        />
+        <DownloadsChart
+          downloads={allYearlyDownloads}
+          title="Yearly downloads"
+          dateFormat="yyyy"
+          className="mb-8"
+          chartType="bars"
+        />
       </section>
     </>
   );
