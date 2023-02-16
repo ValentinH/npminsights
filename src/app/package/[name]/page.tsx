@@ -4,6 +4,7 @@ import { DownloadsChart } from '#src/app/(common)/components/DownloadsChart';
 import * as npmApi from '#src/app/(common)/utils/npm-api';
 import { NpmDailyDownloads } from '#src/app/(common)/utils/npm-api/types';
 
+export const runtime = 'experimental-edge';
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
