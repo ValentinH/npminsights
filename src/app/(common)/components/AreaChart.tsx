@@ -187,18 +187,17 @@ export const AreaChart = ({
             style={tooltipStyles}>
             {formatValue(getValue(tooltipData))}
           </TooltipWithBounds>
-          <Tooltip
+          <TooltipWithBounds
             top={innerHeight + margin.top - 24}
             left={tooltipLeft}
             style={{
               ...defaultStyles,
               minWidth: 72,
               textAlign: 'center',
-              transform: 'translateX(-50%)',
               whiteSpace: 'nowrap',
             }}>
             {formatDate(getDate(tooltipData))}
-          </Tooltip>
+          </TooltipWithBounds>
         </div>
       )}
     </div>

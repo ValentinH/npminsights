@@ -65,6 +65,7 @@ function BarsChart({ points, width, height, formatDate, formatValue }: BarsProps
   // bounds
   const xMax = width - leftMargin;
   const yMax = height - verticalMargin;
+  const showBottomLegend = width / points.length > 15;
 
   // scales, memoize for performance
   const dateScale = useMemo(
@@ -135,18 +136,20 @@ function BarsChart({ points, width, height, formatDate, formatValue }: BarsProps
               />
             );
           })}
-          <AxisBottom
-            top={yMax}
-            scale={dateScale}
-            tickFormat={(d) => formatDate(new Date(d))}
-            stroke={axisColor}
-            tickStroke={axisColor}
-            tickLabelProps={() => ({
-              fill: axisColor,
-              fontSize: 14,
-              textAnchor: 'middle',
-            })}
-          />
+          {showBottomLegend && (
+            <AxisBottom
+              top={yMax}
+              scale={dateScale}
+              tickFormat={(d) => formatDate(new Date(d))}
+              stroke={axisColor}
+              tickStroke={axisColor}
+              tickLabelProps={() => ({
+                fill: axisColor,
+                fontSize: 14,
+                textAnchor: 'middle',
+              })}
+            />
+          )}
           <AxisLeft
             scale={yScale}
             tickFormat={(v) => millify(Number(v))}
