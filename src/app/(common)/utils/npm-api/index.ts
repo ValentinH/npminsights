@@ -5,7 +5,7 @@ import http from '../http';
 
 const FIRST_AVAILABLE_DATE = '2015-01-01';
 
-export const getPackageInsights = async (packageName: string) => {
+export const getPackageInsights = async (packageName = '') => {
   if (process.env.NODE_ENV === 'development') {
     return MOCK_DATA;
   }

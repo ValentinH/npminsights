@@ -6,7 +6,7 @@ import { GridRows, GridColumns } from '@visx/grid';
 import { ParentSize } from '@visx/responsive';
 import { scaleTime, scaleLinear } from '@visx/scale';
 import { AreaClosed, Line, Bar } from '@visx/shape';
-import { Tooltip, TooltipWithBounds, defaultStyles, useTooltip } from '@visx/tooltip';
+import { TooltipWithBounds, defaultStyles, useTooltip } from '@visx/tooltip';
 import { max, extent, bisector } from 'd3-array';
 import React, { useMemo, useCallback } from 'react';
 import tailwindColors from 'tailwindcss/colors';
