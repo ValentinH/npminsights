@@ -1,7 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import { useCombobox } from 'downshift';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useDebounce } from 'use-debounce';
 import http from '../utils/http';
@@ -13,6 +13,7 @@ type PackageAutocompleteProps = {
 export const PackageAutocomplete = ({
   placeholder = 'find a package',
 }: PackageAutocompleteProps) => {
+  const router = useRouter();
   const [inputValue, setInputValue] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
   const [isSearching, setIsSearching] = React.useState(false);
@@ -33,6 +34,11 @@ export const PackageAutocomplete = ({
     items: suggestions,
     itemToString(suggestion) {
       return suggestion ? suggestion.package.name : '';
+    },
+    onSelectedItemChange({ selectedItem }) {
+      if (selectedItem) {
+        router.push(`/package/${selectedItem.package.name}`);
+      }
     },
   });
 
@@ -91,14 +97,13 @@ export const PackageAutocomplete = ({
             {suggestions.map((suggestion, index) => (
               <li
                 key={suggestion.package.name}
-                className={clsx(highlightedIndex === index && 'bg-yellow-500/20')}
+                className={clsx(
+                  'flex cursor-pointer flex-col py-2 px-3 shadow-sm',
+                  highlightedIndex === index && 'bg-yellow-500/20'
+                )}
                 {...getItemProps({ item: suggestion, index })}>
-                <Link
-                  className="flex flex-col py-2 px-3 shadow-sm"
-                  href={`/package/${suggestion.package.name}`}>
-                  <span>{suggestion.package.name}</span>
-                  <span className="text-sm text-gray-400">{suggestion.package.description}</span>
-                </Link>
+                <span>{suggestion.package.name}</span>
+                <span className="text-sm text-gray-400">{suggestion.package.description}</span>
               </li>
             ))}
           </>
