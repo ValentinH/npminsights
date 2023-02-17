@@ -1,6 +1,6 @@
 import React from 'react';
 import { PackageAutocomplete } from './(common)/components/PackageAutocomplete';
-import PackageInsights from './package/[name]/PackageInsights';
+import PackageInsights from './package/[...name]/PackageInsights';
 
 export const runtime = 'experimental-edge';
 
