@@ -30,7 +30,7 @@ export default async function Package({ params }: PackageProps) {
         {packageName} <span className="text-gray-400">insights</span>
       </h1>
       {/* @ts-expect-error Server Component */}
-      <PackageInsights packageName={name.join('/')} />
+      <PackageInsights packageName={packageName} />
     </>
   );
 }
