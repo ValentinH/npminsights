@@ -13,7 +13,7 @@ export async function generateStaticParams() {
   ];
 }
 
-type PackageProps = {
+export type PackageProps = {
   params: { name: string[] }; // we use an array of strings to support scoped packages
 };
 
