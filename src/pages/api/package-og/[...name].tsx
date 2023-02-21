@@ -1,6 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 import { scaleBand, scaleLinear } from '@visx/scale';
-import { NextApiRequest } from 'next';
+import clsx from 'clsx';
 import { NextRequest } from 'next/server';
 import React from 'react';
 import tailwindColors from 'tailwindcss/colors';
@@ -20,11 +20,10 @@ export default async function handler(req: NextRequest) {
 
   const data = await getPackageInsights(packageName);
 
-  const allYearlyDownloads = data.allDailyDownloads.reduce<NpmDailyDownloads[]>((acc, curr) => {
+  const allMonthlyDownloads = data.allDailyDownloads.reduce<NpmDailyDownloads[]>((acc, curr) => {
     const last = acc[acc.length - 1];
-    const isNewYear =
-      !last || new Date(curr.day).getFullYear() !== new Date(last.day).getFullYear();
-    if (isNewYear) {
+    const isNewMonth = !last || new Date(curr.day).getMonth() !== new Date(last.day).getMonth();
+    if (isNewMonth) {
       return [
         ...acc,
         {
@@ -37,11 +36,23 @@ export default async function handler(req: NextRequest) {
     last.downloads += curr.downloads;
     return acc;
   }, []);
+
   return new ImageResponse(
     (
-      // Modified based on https://tailwindui.com/components/marketing/sections/cta-sections
-      <div tw="h-full w-full flex flex-col items-center justify-center bg-gray-800">
-        <DownloadsChart downloads={allYearlyDownloads} />
+      <div tw="h-full w-full flex flex-col items-center justify-start bg-gray-900 p-4 relative">
+        <h1 tw="mb-4 text-center text-4xl text-white">
+          {packageName} <span tw="text-gray-400 ml-2">insights</span>
+        </h1>
+        <h2 tw="text-white self-start ml-14 text-xl">Downloads</h2>
+        <div tw="flex items-center mb-4">
+          <Card title="Last day" value={data.lastDay} previousValue={data.lastDayPreviousWeek} />
+          <Card title="Last week" value={data.lastWeek} previousValue={data.previousWeek} />
+          <Card title="Last month" value={data.lastMonth} previousValue={data.previousMonth} />
+          <Card title="Last year" value={data.lastYear} previousValue={data.previousYear} />
+        </div>
+        <h2 tw="text-white self-start ml-14 text-xl">Monthly downloads history</h2>
+        <DownloadsChart downloads={allMonthlyDownloads} width={800} height={300} />
+        <p tw="absolute bottom-0 right-4 text-white text-sm">npm-insights.com</p>
       </div>
     ),
     {
@@ -51,11 +62,39 @@ export default async function handler(req: NextRequest) {
   );
 }
 
+type CardProps = {
+  title: string;
+  value: number;
+  previousValue: number;
+};
+
+const Card = ({ title, value, previousValue }: CardProps) => {
+  const percentageDiff =
+    value !== 0 && previousValue !== 0 ? ((value - previousValue) / previousValue) * 100 : 0;
+  return (
+    <div tw="mx-4 w-60 h-full flex flex-col rounded-lg bg-gray-800 px-4 py-6 ring-gray-900/5">
+      <div tw="flex w-full items-center justify-between mb-2">
+        <h3 tw="text-xl text-gray-100 m-0">{title}</h3>
+        <p tw={clsx('m-0', percentageDiff > 0 ? 'text-green-500' : 'text-red-600')}>
+          {percentageDiff > 0 && '+'}
+          {percentageDiff.toLocaleString('en', { maximumFractionDigits: 1 }) || '-'}%
+        </p>
+      </div>
+      <div tw="flex flex-wrap items-center">
+        <p tw="text-yellow-400 m-0 mr-2">{value.toLocaleString('en') || '-'}</p>
+        <p tw="text-sm text-gray-400 m-0">from {previousValue.toLocaleString('en') || '-'}</p>
+      </div>
+    </div>
+  );
+};
+
 type DownloadsChartProps = {
+  width: number;
+  height: number;
   downloads: NpmDailyDownloads[];
 };
 
-const DownloadsChart = ({ downloads }: DownloadsChartProps) => {
+const DownloadsChart = ({ downloads, width, height }: DownloadsChartProps) => {
   const points = downloads.map((d) => ({
     date: d.day,
     value: d.downloads,
@@ -70,21 +109,13 @@ const DownloadsChart = ({ downloads }: DownloadsChartProps) => {
     return points;
   };
 
-  return <BarsChart points={getPoints()} width={1000} height={400} />;
+  return <BarsChart points={getPoints()} width={width} height={height} />;
 };
 
 export type Point = {
   date: string;
   value: number;
 };
-
-const leftMargin = 40;
-const verticalMargin = 70;
-export const background = tailwindColors.slate[800];
-export const background2 = tailwindColors.gray[800];
-export const accentColor = tailwindColors.slate[50];
-export const accentColorDark = tailwindColors.slate[100];
-export const axisColor = tailwindColors.amber[500];
 
 // accessors
 const getDate = (d: Point) => d.date;
@@ -97,6 +128,8 @@ export type BarsProps = {
 };
 
 export function BarsChart({ points, width, height }: BarsProps) {
+  const leftMargin = 40;
+  const verticalMargin = 70;
   // bounds
   const xMax = width - leftMargin;
   const yMax = height - verticalMargin;
@@ -116,6 +149,12 @@ export function BarsChart({ points, width, height }: BarsProps) {
 
   return (
     <svg width={width} height={height}>
+      <defs>
+        <linearGradient id="bars-gradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color={tailwindColors.slate[100]} stop-opacity="1"></stop>
+          <stop offset="100%" stop-color={tailwindColors.slate[50]} stop-opacity="0.1"></stop>
+        </linearGradient>
+      </defs>
       <g transform={`translate(${leftMargin}, ${verticalMargin / 2})`}>
         {points.map((p) => {
           const date = getDate(p);
@@ -125,14 +164,13 @@ export function BarsChart({ points, width, height }: BarsProps) {
           const barY = yMax - barHeight;
           return (
             <rect
-              className="test"
               key={`bar-${date}`}
               x={barX}
               y={barY}
               width={barWidth}
               height={barHeight}
-              stroke="#fff"
-              fill="#fff"
+              stroke={tailwindColors.gray[800]}
+              fill="url(#bars-gradient)"
             />
           );
         })}

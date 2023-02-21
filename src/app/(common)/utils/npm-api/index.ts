@@ -5,11 +5,11 @@ import http from '../http';
 
 const FIRST_AVAILABLE_DATE = '2015-01-01';
 
-export const getPackageInsights = async (packageName = '') => {
+export const getPackageInsights = async (packageName = '', sinceDate = FIRST_AVAILABLE_DATE) => {
   if (process.env.NODE_ENV === 'development') {
     return MOCK_DATA;
   }
-  const allDailyDownloads = await getAllDailyDownloads(packageName);
+  const allDailyDownloads = await getAllDailyDownloads(packageName, sinceDate);
 
   return {
     total: getSumOfDownloads(allDailyDownloads),
@@ -25,8 +25,8 @@ export const getPackageInsights = async (packageName = '') => {
   };
 };
 
-const getAllDailyDownloads = async (packageName: string) => {
-  const ranges = getListOfRangesSinceStart();
+const getAllDailyDownloads = async (packageName: string, sinceDate: string) => {
+  const ranges = getListOfRangesSinceStart(sinceDate);
   const rangesResponses = await Promise.all(
     ranges.map(({ start, end }) => {
       return http.get<NpmRangeData>(
@@ -56,11 +56,11 @@ const getSumOfDownloads = (downloads: NpmDailyDownloads[]) => {
   }, 0);
 };
 
-const getListOfRangesSinceStart = () => {
-  const firstAvailableDate = new Date(FIRST_AVAILABLE_DATE);
+const getListOfRangesSinceStart = (sinceDate: string) => {
+  const startDate = new Date(sinceDate);
   const today = new Date();
   const ranges = [];
-  let current = firstAvailableDate;
+  let current = startDate;
   while (current <= today) {
     ranges.push({
       start: format(current, 'yyyy-MM-dd'),

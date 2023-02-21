@@ -16,11 +16,11 @@ export type Point = {
 
 const leftMargin = 40;
 const verticalMargin = 70;
-export const background = tailwindColors.slate[800];
-export const background2 = tailwindColors.gray[800];
-export const accentColor = tailwindColors.slate[50];
-export const accentColorDark = tailwindColors.slate[100];
-export const axisColor = tailwindColors.amber[500];
+const background = tailwindColors.slate[800];
+const background2 = tailwindColors.gray[800];
+const accentColor = tailwindColors.slate[50];
+const accentColorDark = tailwindColors.slate[100];
+const axisColor = tailwindColors.amber[500];
 
 const tooltipStyles = {
   ...defaultStyles,
