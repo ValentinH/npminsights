@@ -37,6 +37,7 @@ export default async function handler(req: NextRequest) {
     return acc;
   }, []);
 
+  // TODO: make text larger and remove some metrics. ATM this is not readable when displayed on social sites
   return new ImageResponse(
     (
       <div tw="h-full w-full flex flex-col items-center justify-start bg-gray-900 p-4 relative">
@@ -52,7 +53,7 @@ export default async function handler(req: NextRequest) {
         </div>
         <h2 tw="text-white self-start ml-14 text-xl">Monthly downloads history</h2>
         <DownloadsChart downloads={allMonthlyDownloads} width={800} height={300} />
-        <p tw="absolute bottom-0 right-4 text-white text-sm">npm-insights.com</p>
+        <p tw="absolute bottom-0 right-4 text-white text-sm">npminsights.com</p>
       </div>
     ),
     {
