@@ -8,10 +8,12 @@ import http from '../utils/http';
 
 type PackageAutocompleteProps = {
   placeholder?: string;
+  className?: string;
 };
 
 export const PackageAutocomplete = ({
   placeholder = 'find a package',
+  className,
 }: PackageAutocompleteProps) => {
   const router = useRouter();
   const [inputValue, setInputValue] = React.useState('');
@@ -67,7 +69,7 @@ export const PackageAutocomplete = ({
   const showNoResult = hasNoResult && debouncedValue && !isSearching;
 
   return (
-    <div className="relative w-full max-w-lg">
+    <div className={clsx('relative w-full max-w-lg', className)}>
       <input
         placeholder={placeholder}
         className="w-full rounded bg-gray-800 px-6 py-3"
@@ -98,12 +100,14 @@ export const PackageAutocomplete = ({
               <li
                 key={suggestion.package.name}
                 className={clsx(
-                  'flex cursor-pointer flex-col py-2 px-3 shadow-sm',
+                  'flex cursor-pointer flex-col overflow-hidden py-2 px-3 shadow-sm',
                   highlightedIndex === index && 'bg-yellow-500/20'
                 )}
                 {...getItemProps({ item: suggestion, index })}>
                 <span>{suggestion.package.name}</span>
-                <span className="text-sm text-gray-400">{suggestion.package.description}</span>
+                <span className="text-sm text-gray-400 line-clamp-2 ">
+                  {suggestion.package.description}
+                </span>
               </li>
             ))}
           </>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { PackageAutocomplete } from '#src/app/(common)/components/PackageAutocomplete';
 import PackageInsights from './PackageInsights';
 
 // cannot use edge-runtime due to https://github.com/vercel/next.js/issues/43384
@@ -23,9 +22,6 @@ export default async function Package({ params }: PackageProps) {
 
   return (
     <>
-      <div className="my-4 flex justify-center">
-        <PackageAutocomplete placeholder="find another package" />
-      </div>
       <h1 className="my-8 text-center text-4xl">
         {packageName} <span className="text-gray-400">insights</span>
       </h1>
