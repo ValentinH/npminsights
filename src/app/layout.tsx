@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AnalyticsWrapper } from './(common)/components/AnalyticsWrapper';
 import { PackageAutocomplete } from './(common)/components/PackageAutocomplete';
 import './globals.css';
 
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </a>
           </p>
         </footer>
+        <AnalyticsWrapper />
       </body>
     </html>
   );
