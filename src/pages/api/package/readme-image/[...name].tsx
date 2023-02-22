@@ -1,9 +1,9 @@
 import { ImageResponse } from '@vercel/og';
-import { scaleBand, scaleLinear } from '@visx/scale';
 import clsx from 'clsx';
 import { NextRequest } from 'next/server';
 import React from 'react';
-import tailwindColors from 'tailwindcss/colors';
+import { OgBarsChart } from '#src/app/(common)/components/OgBarsChart';
+import { SIX_HOURS_IN_SECONDS } from '#src/app/(common)/utils/consts';
 import { getPackageInsights } from '#src/app/(common)/utils/npm-api';
 import { NpmDailyDownloads } from '#src/app/(common)/utils/npm-api/types';
 
@@ -37,7 +37,11 @@ export default async function handler(req: NextRequest) {
     return acc;
   }, []);
 
-  // TODO: make text larger and remove some metrics. ATM this is not readable when displayed on social sites
+  const points = allMonthlyDownloads.map((d) => ({
+    date: d.day,
+    value: d.downloads,
+  }));
+
   return new ImageResponse(
     (
       <div tw="h-full w-full flex flex-col items-center justify-start bg-gray-900 p-4 relative">
@@ -52,13 +56,16 @@ export default async function handler(req: NextRequest) {
           <Card title="Last year" value={data.lastYear} previousValue={data.previousYear} />
         </div>
         <h2 tw="text-white self-start ml-14 text-xl">Monthly downloads history</h2>
-        <DownloadsChart downloads={allMonthlyDownloads} width={800} height={300} />
-        <p tw="absolute bottom-0 right-4 text-white text-sm">npminsights.com</p>
+        <OgBarsChart points={points} width={800} height={300} />
+        <p tw="absolute -bottom-2 right-4 text-white text-sm">npminsights.com</p>
       </div>
     ),
     {
       width: 1200,
       height: 630,
+      headers: {
+        'cache-control': `public, immutable, no-transform, max-age=${SIX_HOURS_IN_SECONDS}`,
+      },
     }
   );
 }
@@ -88,94 +95,3 @@ const Card = ({ title, value, previousValue }: CardProps) => {
     </div>
   );
 };
-
-type DownloadsChartProps = {
-  width: number;
-  height: number;
-  downloads: NpmDailyDownloads[];
-};
-
-const DownloadsChart = ({ downloads, width, height }: DownloadsChartProps) => {
-  const points = downloads.map((d) => ({
-    date: d.day,
-    value: d.downloads,
-  }));
-
-  const getPoints = () => {
-    // remove all leading zeros
-    const firstNonZeroIndex = points.findIndex((p) => p.value !== 0);
-    if (firstNonZeroIndex > 0) {
-      return points.slice(firstNonZeroIndex);
-    }
-    return points;
-  };
-
-  return <BarsChart points={getPoints()} width={width} height={height} />;
-};
-
-export type Point = {
-  date: string;
-  value: number;
-};
-
-// accessors
-const getDate = (d: Point) => d.date;
-const getValue = (d: Point) => d.value;
-
-export type BarsProps = {
-  points: Point[];
-  width: number;
-  height: number;
-};
-
-export function BarsChart({ points, width, height }: BarsProps) {
-  const leftMargin = 40;
-  const verticalMargin = 70;
-  // bounds
-  const xMax = width - leftMargin;
-  const yMax = height - verticalMargin;
-
-  // scales, memoize for performance
-  const dateScale = scaleBand<string>({
-    range: [0, xMax],
-    round: true,
-    domain: points.map(getDate),
-    padding: 0.1,
-  });
-  const yScale = scaleLinear<number>({
-    range: [yMax, 0],
-    round: true,
-    domain: [0, Math.max(...points.map(getValue))],
-  });
-
-  return (
-    <svg width={width} height={height}>
-      <defs>
-        <linearGradient id="bars-gradient" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color={tailwindColors.slate[100]} stop-opacity="1"></stop>
-          <stop offset="100%" stop-color={tailwindColors.slate[50]} stop-opacity="0.1"></stop>
-        </linearGradient>
-      </defs>
-      <g transform={`translate(${leftMargin}, ${verticalMargin / 2})`}>
-        {points.map((p) => {
-          const date = getDate(p);
-          const barWidth = dateScale.bandwidth();
-          const barHeight = yMax - (yScale(getValue(p)) ?? 0);
-          const barX = dateScale(date) || 0;
-          const barY = yMax - barHeight;
-          return (
-            <rect
-              key={`bar-${date}`}
-              x={barX}
-              y={barY}
-              width={barWidth}
-              height={barHeight}
-              stroke={tailwindColors.gray[800]}
-              fill="url(#bars-gradient)"
-            />
-          );
-        })}
-      </g>
-    </svg>
-  );
-}

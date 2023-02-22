@@ -21,19 +21,14 @@ export const DownloadsChart = ({
   className,
   chartType = 'area',
 }: DownloadsChartProps) => {
-  const downloadsPoints = React.useMemo(() => {
-    const points = downloads.map((d) => ({
-      date: d.day,
-      value: d.downloads,
-    }));
-
-    // remove all leading zeros
-    const firstNonZeroIndex = points.findIndex((p) => p.value !== 0);
-    if (firstNonZeroIndex > 0) {
-      return points.slice(firstNonZeroIndex);
-    }
-    return points;
-  }, [downloads]);
+  const downloadsPoints = React.useMemo(
+    () =>
+      downloads.map((d) => ({
+        date: d.day,
+        value: d.downloads,
+      })),
+    [downloads]
+  );
   return (
     <div className={clsx('relative h-96 w-full rounded-t-xl bg-gray-800', className)}>
       <h3 className="absolute top-2 left-4 z-10 text-sm uppercase">{title}</h3>
