@@ -12,14 +12,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <head />
       <body className="h-screen w-full overflow-y-auto overflow-x-hidden bg-gray-900 text-white">
-        <header className="container mx-auto flex items-center justify-between p-4">
-          <Link href="/" className="text-xl">
+        <header className="container mx-auto flex flex-wrap items-center justify-between gap-4 p-2">
+          <Link href="/" className="order-1 text-xl">
             npm<span className="ml-0.5 text-gray-400">insights.com</span>
           </Link>
-          <PackageAutocomplete placeholder="search for any package" />
+          <PackageAutocomplete
+            placeholder="search for any package"
+            className="order-3 sm:order-2"
+          />
           <a
             href="https://github.com/ValentinH/npminsights"
-            className="flex items-center gap-2 text-gray-100">
+            className="order-2 flex items-center gap-2 text-gray-100 sm:order-3">
             <GithubLogo size={20} />
             contribute
           </a>
