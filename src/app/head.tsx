@@ -8,6 +8,7 @@ export default function Head() {
       />
       <meta name="description" content="Get insights about NPM packages and authors" />
       <link rel="icon" href="/favicon.ico" />
+      <link rel="manifest" href="/site.webmanifest" />
     </>
   );
 }
