@@ -1,10 +1,19 @@
-## Ideas
+# npminsights.com
 
-### Package page
-- some cards with downloads per day, week, month and year with comparison with previous period
-- some charts with downloads per day, week, month and year (area chart?)
+The original idea behind this website was too generate images containing download metrics in order to display them on Github Readmes.
+In order to have something to link to when clicking the image, a website was created as well.
 
-## Author page
+## Development
 
-- list all packages with their respective total downloads
-- author total downloads
+This is using Next.js 13 with the new `app` directory architecture.
+
+To install the dependencies:
+```sh
+yarn install
+```
+
+To run the app:
+```sh
+yarn dev
+```
+
