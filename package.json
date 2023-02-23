@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@next/font": "13.1.6",
     "@tailwindcss/line-clamp": "^0.4.2",

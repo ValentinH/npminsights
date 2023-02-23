@@ -6,9 +6,9 @@ import http from '../http';
 const FIRST_AVAILABLE_DATE = '2015-01-01';
 
 export const getPackageInsights = async (packageName = '', sinceDate = FIRST_AVAILABLE_DATE) => {
-  if (process.env.NODE_ENV === 'development') {
-    return MOCK_DATA;
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   return MOCK_DATA;
+  // }
   const allDailyDownloads = await getAllDailyDownloads(packageName, sinceDate);
 
   return {
@@ -43,17 +43,16 @@ const getAllDailyDownloads = async (packageName: string, sinceDate: string) => {
     return [...acc, ...data.downloads];
   }, []);
 
-  const allDownloadsBeforeToday = allDownloads.filter(({ day }) => {
-    return new Date(day) < startOfDay(new Date());
-  });
+  const lastDayWithData = allDownloads.findLastIndex(({ downloads }) => downloads > 0);
+  const allDownloadsUntilLastDayWithData = allDownloads.slice(0, lastDayWithData + 1);
 
   // remove all leading zeros
-  const firstNonZeroIndex = allDownloadsBeforeToday.findIndex((p) => p.downloads !== 0);
+  const firstNonZeroIndex = allDownloadsUntilLastDayWithData.findIndex((p) => p.downloads !== 0);
   if (firstNonZeroIndex > 0) {
-    return allDownloadsBeforeToday.slice(firstNonZeroIndex);
+    return allDownloadsUntilLastDayWithData.slice(firstNonZeroIndex);
   }
 
-  return allDownloadsBeforeToday;
+  return allDownloadsUntilLastDayWithData;
 };
 
 const getSumOfDownloads = (downloads: NpmDailyDownloads[]) => {
@@ -76,6 +75,12 @@ const getListOfRangesSinceStart = (sinceDate: string) => {
   }
   return ranges;
 };
+
+declare global {
+  interface Array<T> {
+    findLastIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
+  }
+}
 
 const MOCK_DATA = {
   total: 16442488,
