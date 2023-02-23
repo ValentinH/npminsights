@@ -1,4 +1,4 @@
-import { addYears, endOfYear, format, startOfDay } from 'date-fns';
+import { addYears, endOfYear, format } from 'date-fns';
 import { NpmDailyDownloads, NpmRangeData } from './types';
 import { SIX_HOURS_IN_SECONDS } from '../consts';
 import http from '../http';
@@ -6,9 +6,9 @@ import http from '../http';
 const FIRST_AVAILABLE_DATE = '2015-01-01';
 
 export const getPackageInsights = async (packageName = '', sinceDate = FIRST_AVAILABLE_DATE) => {
-  // if (process.env.NODE_ENV === 'development') {
-  //   return MOCK_DATA;
-  // }
+  if (process.env.NODE_ENV === 'development') {
+    return MOCK_DATA;
+  }
   const allDailyDownloads = await getAllDailyDownloads(packageName, sinceDate);
 
   return {
