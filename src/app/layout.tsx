@@ -1,7 +1,16 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { AnalyticsWrapper } from './(common)/components/AnalyticsWrapper';
 import { PackageAutocomplete } from './(common)/components/PackageAutocomplete';
 import './globals.css';
+
+export const metadata: Metadata = {
+  description: 'Get insights about NPM packages and authors',
+  icons: {
+    icon: '/favicon.ico',
+  },
+  manifest: '/site.webmanifest',
+};
 
 type RootLayoutProps = {
   children: React.ReactNode;

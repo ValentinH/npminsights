@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import PackageInsights from './PackageInsights';
 
@@ -29,4 +30,37 @@ export default async function Package({ params }: PackageProps) {
       <PackageInsights name={packageName} />
     </>
   );
+}
+
+export async function generateMetadata({ params }: PackageProps): Promise<Metadata> {
+  const { name } = params;
+  const packageName = name.map(decodeURIComponent).join('/');
+
+  const url = `https://npminsights.com/package/${packageName}`;
+  const description = `Get insights about ${packageName} NPM package`;
+  const image: NonNullable<Metadata['openGraph']>['images'] = {
+    url: `https://npminsights.com/api/package/og-image/${packageName}`,
+    width: 1200,
+    height: 630,
+    alt: `${packageName} insights preview`,
+  };
+  return {
+    title: `${packageName} - npminsights.com`,
+    openGraph: {
+      title: packageName,
+      description,
+      url,
+      siteName: 'npminsights.com',
+      type: 'website',
+      locale: 'en-US',
+      images: image,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      creator: '@ValentinHervieu',
+      title: packageName,
+      description,
+      images: image,
+    },
+  };
 }
