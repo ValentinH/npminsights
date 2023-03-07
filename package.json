@@ -7,12 +7,14 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "preinstall": "npx only-allow pnpm"
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "@next/env": "^13.2.3",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@vercel/analytics": "^0.1.10",
     "@vercel/og": "^0.1.0",
