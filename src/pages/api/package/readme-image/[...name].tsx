@@ -80,7 +80,7 @@ const Card = ({ title, value, previousValue }: CardProps) => {
   const percentageDiff =
     value !== 0 && previousValue !== 0 ? ((value - previousValue) / previousValue) * 100 : 0;
   return (
-    <div tw="mx-4 w-60 h-full flex flex-col rounded-lg bg-gray-800 px-4 py-6 ring-gray-900/5">
+    <div tw="mx-4 w-60 h-full flex flex-col rounded-lg bg-gray-800 px-4 py-6">
       <div tw="flex w-full items-center justify-between mb-2">
         <h3 tw="text-xl text-gray-100 m-0">{title}</h3>
         <p tw={clsx('m-0', percentageDiff > 0 ? 'text-green-500' : 'text-red-600')}>
