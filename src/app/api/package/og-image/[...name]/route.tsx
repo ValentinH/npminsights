@@ -7,12 +7,10 @@ import { SIX_HOURS_IN_SECONDS } from '#src/app/(common)/utils/consts';
 import { getPackageInsights } from '#src/app/(common)/utils/npm-api';
 import { NpmDailyDownloads } from '#src/app/(common)/utils/npm-api/types';
 
-export const config = {
-  runtime: 'edge',
-};
+export const runtime = 'experimental-edge';
 
-export default async function handler(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+export async function GET(req: NextRequest) {
+  const { searchParams } = req.nextUrl;
   const packageName = searchParams.getAll('name').join('/');
   if (!packageName) {
     return new Response('Missing package name', { status: 400 });
