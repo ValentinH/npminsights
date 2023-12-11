@@ -23,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className="h-screen w-full overflow-y-auto overflow-x-hidden bg-gray-900 text-white">
         <header className="container mx-auto flex flex-wrap items-center justify-between gap-4 p-2">
           <Link href="/" className="order-1 text-xl">
-            npm<span className="ml-0.5 text-gray-400">insights.com</span>
+            npm<span className="ml-0.5 text-gray-400">insights</span>
           </Link>
           <PackageAutocomplete
             placeholder="search for any package"
