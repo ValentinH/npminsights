@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
         </div>
         <h2 tw="text-white self-start ml-14 text-xl">Monthly downloads history</h2>
         <OgBarsChart points={points} width={800} height={300} />
-        <p tw="absolute -bottom-2 right-4 text-white text-sm">npminsights.com</p>
+        <p tw="absolute -bottom-2 right-4 text-white text-sm">npminsights</p>
       </div>
     ),
     {

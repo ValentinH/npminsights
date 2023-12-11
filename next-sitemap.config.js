@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: `https://npminsights.com`,
+  siteUrl: `https://npminsights.vercel.app`,
   generateRobotsTxt: true,
   robotsTxtOptions: {
     policies: [

@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
         </div>
 
         <div tw="absolute flex justify-center -bottom-3 left-0 right-0">
-          <p tw=" text-white text-sm">npminsights.com</p>
+          <p tw=" text-white text-sm">npminsights</p>
         </div>
       </div>
     ),

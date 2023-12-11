@@ -2,11 +2,11 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[json]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll": false
+      "source.fixAll": "never"
     }
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "explicit"
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,

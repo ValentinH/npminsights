@@ -36,21 +36,21 @@ export async function generateMetadata({ params }: PackageProps): Promise<Metada
   const { name } = params;
   const packageName = name.map(decodeURIComponent).join('/');
 
-  const url = `https://npminsights.com/package/${packageName}`;
+  const url = `https://npminsights.vercel.app/package/${packageName}`;
   const description = `Get insights about ${packageName} NPM package`;
   const image: NonNullable<Metadata['openGraph']>['images'] = {
-    url: `https://npminsights.com/api/package/og-image/${packageName}`,
+    url: `https://npminsights.vercel.app/api/package/og-image/${packageName}`,
     width: 1200,
     height: 630,
     alt: `${packageName} insights preview`,
   };
   return {
-    title: `${packageName} - npminsights.com`,
+    title: `${packageName} - npminsights`,
     openGraph: {
       title: packageName,
       description,
       url,
-      siteName: 'npminsights.com',
+      siteName: 'npminsights',
       type: 'website',
       locale: 'en-US',
       images: image,

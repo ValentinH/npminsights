@@ -1,6 +1,6 @@
 {
-  "name": "npminsights.com",
-  "short_name": "npminsights.com",
+  "name": "npminsights.vercel.app",
+  "short_name": "npminsights.vercel.app",
   "icons": [
     { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
