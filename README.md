@@ -2,7 +2,7 @@
 
 The application is made using Next.js 13 with the new `app` directory architecture.
 
-The original idea behind this website was too generate images containing download metrics in order to display them on Github Readmes.
+The original idea behind this website was to generate images containing download metrics in order to display them on Github Readmes.
 In order to have something to link to when clicking the image, a website was created as well.
 
 ## Images
