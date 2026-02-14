@@ -5,7 +5,7 @@ import http from '../http';
 const FIRST_AVAILABLE_DATE = '2015-01-01';
 
 export const getPackageInsights = async (packageName = '', sinceDate = FIRST_AVAILABLE_DATE) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     return MOCK_DATA;
   }
   const allDailyDownloads = await getAllDailyDownloads(packageName, sinceDate);
@@ -70,11 +70,6 @@ const getListOfRangesSinceStart = (sinceDate: string) => {
   return ranges;
 };
 
-declare global {
-  interface Array<T> {
-    findLastIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
-  }
-}
 
 const MOCK_DATA = {
   total: 16442488,

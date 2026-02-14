@@ -1,8 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, ErrorComponentProps } from '@tanstack/react-router';
 import { getPackageInsights } from '~/utils/npm-api';
 import PackageInsights from '~/components/PackageInsights';
 
 export const Route = createFileRoute('/package/$')({
+  errorComponent: PackageErrorComponent,
   loader: async ({ params }) => {
     const name = params['_splat'] || '';
     const packageName = decodeURIComponent(name);
@@ -16,28 +17,28 @@ export const Route = createFileRoute('/package/$')({
     meta: [
       { title: `${loaderData?.packageName} - npminsights` },
       {
-        name: 'og:title',
+        property: 'og:title',
         content: loaderData?.packageName,
       },
       {
-        name: 'og:description',
+        property: 'og:description',
         content: `Get insights about ${loaderData?.packageName} NPM package`,
       },
       {
-        name: 'og:url',
+        property: 'og:url',
         content: `https://npminsights.vercel.app/package/${loaderData?.packageName}`,
       },
-      { name: 'og:site_name', content: 'npminsights' },
-      { name: 'og:type', content: 'website' },
-      { name: 'og:locale', content: 'en-US' },
+      { property: 'og:site_name', content: 'npminsights' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:locale', content: 'en-US' },
       {
-        name: 'og:image',
+        property: 'og:image',
         content: `https://npminsights.vercel.app/api/package/og-image/${loaderData?.packageName}`,
       },
-      { name: 'og:image:width', content: '1200' },
-      { name: 'og:image:height', content: '630' },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
       {
-        name: 'og:image:alt',
+        property: 'og:image:alt',
         content: `${loaderData?.packageName} insights preview`,
       },
       { name: 'twitter:card', content: 'summary_large_image' },
@@ -55,6 +56,17 @@ export const Route = createFileRoute('/package/$')({
   }),
   component: PackagePage,
 });
+
+function PackageErrorComponent({ error }: ErrorComponentProps) {
+  return (
+    <div className="my-16 text-center">
+      <h1 className="text-4xl">Something went wrong</h1>
+      <p className="mt-4 text-gray-400">
+        {error instanceof Error ? error.message : 'Failed to load package data'}
+      </p>
+    </div>
+  );
+}
 
 function PackagePage() {
   const { data, packageName } = Route.useLoaderData();
