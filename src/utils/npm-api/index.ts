@@ -1,12 +1,11 @@
 import { addYears, endOfYear, format } from 'date-fns';
 import { NpmDailyDownloads, NpmRangeData } from './types';
-import { SIX_HOURS_IN_SECONDS } from '../consts';
 import http from '../http';
 
 const FIRST_AVAILABLE_DATE = '2015-01-01';
 
 export const getPackageInsights = async (packageName = '', sinceDate = FIRST_AVAILABLE_DATE) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     return MOCK_DATA;
   }
   const allDailyDownloads = await getAllDailyDownloads(packageName, sinceDate);
@@ -30,12 +29,7 @@ const getAllDailyDownloads = async (packageName: string, sinceDate: string) => {
   const rangesResponses = await Promise.all(
     ranges.map(({ start, end }) => {
       return http.get<NpmRangeData>(
-        `https://api.npmjs.org/downloads/range/${start}:${end}/${packageName}`,
-        {
-          next: {
-            revalidate: SIX_HOURS_IN_SECONDS,
-          },
-        }
+        `https://api.npmjs.org/downloads/range/${start}:${end}/${packageName}`
       );
     })
   );
@@ -76,11 +70,6 @@ const getListOfRangesSinceStart = (sinceDate: string) => {
   return ranges;
 };
 
-declare global {
-  interface Array<T> {
-    findLastIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
-  }
-}
 
 const MOCK_DATA = {
   total: 16442488,

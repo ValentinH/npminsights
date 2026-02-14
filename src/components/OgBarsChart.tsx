@@ -1,5 +1,5 @@
 import { scaleBand, scaleLinear } from '@visx/scale';
-import tailwindColors from 'tailwindcss/colors';
+import { colors } from '~/utils/colors';
 
 type Point = {
   date: string;
@@ -41,8 +41,8 @@ export function OgBarsChart({ points, width, height }: OgBarsChartProps) {
     <svg width={width} height={height}>
       <defs>
         <linearGradient id="bars-gradient" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color={tailwindColors.slate[100]} stop-opacity="1"></stop>
-          <stop offset="100%" stop-color={tailwindColors.slate[50]} stop-opacity="0.1"></stop>
+          <stop offset="0%" stop-color={colors.slate[100]} stop-opacity="1"></stop>
+          <stop offset="100%" stop-color={colors.slate[50]} stop-opacity="0.1"></stop>
         </linearGradient>
       </defs>
       <g transform={`translate(${leftMargin}, ${verticalMargin / 2})`}>
@@ -59,7 +59,7 @@ export function OgBarsChart({ points, width, height }: OgBarsChartProps) {
               y={barY}
               width={barWidth}
               height={barHeight}
-              stroke={tailwindColors.gray[800]}
+              stroke={colors.gray[800]}
               fill="url(#bars-gradient)"
             />
           );

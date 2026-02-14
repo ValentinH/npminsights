@@ -1,10 +1,9 @@
-'use client';
 import clsx from 'clsx';
 import { useCombobox } from 'downshift';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from '@tanstack/react-router';
 import React from 'react';
 import { useDebounce } from 'use-debounce';
-import http from '../utils/http';
+import http from '~/utils/http';
 
 type PackageAutocompleteProps = {
   placeholder?: string;
@@ -15,7 +14,7 @@ export const PackageAutocomplete = ({
   placeholder = 'find a package',
   className,
 }: PackageAutocompleteProps) => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [inputValue, setInputValue] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
   const [isSearching, setIsSearching] = React.useState(false);
@@ -39,7 +38,7 @@ export const PackageAutocomplete = ({
     },
     onSelectedItemChange({ selectedItem }) {
       if (selectedItem) {
-        router.push(`/package/${selectedItem.package.name}`);
+        navigate({ to: '/package/$', params: { _splat: selectedItem.package.name } });
       }
     },
   });
@@ -93,7 +92,7 @@ export const PackageAutocomplete = ({
                   rel="noopener noreferrer">
                   here
                 </a>{' '}
-                to create it 🙂
+                to create it
               </li>
             )}
             {suggestions.map((suggestion, index) => (
@@ -105,7 +104,7 @@ export const PackageAutocomplete = ({
                 )}
                 {...getItemProps({ item: suggestion, index })}>
                 <span>{suggestion.package.name}</span>
-                <span className="text-sm text-gray-400 line-clamp-2 ">
+                <span className="line-clamp-2 text-sm text-gray-400">
                   {suggestion.package.description}
                 </span>
               </li>

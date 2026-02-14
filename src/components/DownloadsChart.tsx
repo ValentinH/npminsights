@@ -1,10 +1,9 @@
-'use client';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React from 'react';
 import { ResponsiveAreaChart } from './AreaChart';
 import { ResponsiveBarsChart } from './BarsChart';
-import { NpmDailyDownloads } from '../utils/npm-api/types';
+import { NpmDailyDownloads } from '~/utils/npm-api/types';
 
 type DownloadsChartProps = {
   title: string;
