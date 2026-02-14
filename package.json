@@ -42,6 +42,7 @@
     "@types/node": "^22.13.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.6.0",
     "nitro": "npm:nitro-nightly@3.0.1-20260213-154614-f663e76d",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.3",
