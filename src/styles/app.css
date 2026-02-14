@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Map gray to slate (matching old tailwind.config.js) */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  --color-gray-950: #020617;
+
+  /* Map green to emerald */
+  --color-green-500: #10b981;
+
+  /* Map yellow to amber */
+  --color-yellow-400: #fbbf24;
+  --color-yellow-500: #f59e0b;
+
+  /* Map red to rose */
+  --color-red-600: #e11d48;
+}

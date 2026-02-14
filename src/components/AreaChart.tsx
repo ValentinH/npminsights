@@ -1,4 +1,3 @@
-'use client';
 import { curveLinear } from '@visx/curve';
 import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
@@ -9,17 +8,17 @@ import { AreaClosed, Line, Bar } from '@visx/shape';
 import { TooltipWithBounds, defaultStyles, useTooltip } from '@visx/tooltip';
 import { max, extent, bisector } from 'd3-array';
 import React, { useMemo, useCallback } from 'react';
-import tailwindColors from 'tailwindcss/colors';
+import { colors } from '~/utils/colors';
 
 export type Point = {
   date: string;
   value: number;
 };
 
-export const background = tailwindColors.slate[800];
-export const background2 = tailwindColors.gray[800];
-export const accentColor = tailwindColors.slate[50];
-export const accentColorDark = tailwindColors.amber[500];
+export const background = colors.slate[800];
+export const background2 = colors.gray[800];
+export const accentColor = colors.slate[50];
+export const accentColorDark = colors.amber[500];
 const tooltipStyles = {
   ...defaultStyles,
   background,

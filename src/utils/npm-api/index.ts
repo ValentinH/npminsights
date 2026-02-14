@@ -1,6 +1,5 @@
 import { addYears, endOfYear, format } from 'date-fns';
 import { NpmDailyDownloads, NpmRangeData } from './types';
-import { SIX_HOURS_IN_SECONDS } from '../consts';
 import http from '../http';
 
 const FIRST_AVAILABLE_DATE = '2015-01-01';
@@ -30,12 +29,7 @@ const getAllDailyDownloads = async (packageName: string, sinceDate: string) => {
   const rangesResponses = await Promise.all(
     ranges.map(({ start, end }) => {
       return http.get<NpmRangeData>(
-        `https://api.npmjs.org/downloads/range/${start}:${end}/${packageName}`,
-        {
-          next: {
-            revalidate: SIX_HOURS_IN_SECONDS,
-          },
-        }
+        `https://api.npmjs.org/downloads/range/${start}:${end}/${packageName}`
       );
     })
   );

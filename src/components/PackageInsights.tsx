@@ -1,16 +1,25 @@
 import clsx from 'clsx';
-import React from 'react';
-import { DownloadsChart } from '#src/app/(common)/components/DownloadsChart';
-import * as npmApi from '#src/app/(common)/utils/npm-api';
-import { NpmDailyDownloads } from '#src/app/(common)/utils/npm-api/types';
+import { DownloadsChart } from '~/components/DownloadsChart';
+import { NpmDailyDownloads } from '~/utils/npm-api/types';
 
-type PackageProps = {
-  name?: string;
+type PackageInsightsData = {
+  total: number;
+  lastDay: number;
+  lastDayPreviousWeek: number;
+  lastWeek: number;
+  previousWeek: number;
+  lastMonth: number;
+  previousMonth: number;
+  lastYear: number;
+  previousYear: number;
+  allDailyDownloads: NpmDailyDownloads[];
 };
 
-export default async function PackageInsights({ name }: PackageProps) {
-  const data = await npmApi.getPackageInsights(name);
+type PackageInsightsProps = {
+  data: PackageInsightsData;
+};
 
+export default function PackageInsights({ data }: PackageInsightsProps) {
   const firstMonday = data.allDailyDownloads.findIndex((d) => new Date(d.day).getDay() === 1);
   const allWeeklyDownloads = data.allDailyDownloads
     .slice(firstMonday)

@@ -1,13 +1,13 @@
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { LinearGradient } from '@visx/gradient';
 import { Group } from '@visx/group';
-import ParentSize from '@visx/responsive/lib/components/ParentSizeModern';
+import { ParentSize } from '@visx/responsive';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { Bar } from '@visx/shape';
 import { defaultStyles, Tooltip, useTooltip } from '@visx/tooltip';
 import millify from 'millify';
 import React, { useMemo } from 'react';
-import tailwindColors from 'tailwindcss/colors';
+import { colors } from '~/utils/colors';
 
 export type Point = {
   date: string;
@@ -16,11 +16,11 @@ export type Point = {
 
 const leftMargin = 40;
 const verticalMargin = 70;
-const background = tailwindColors.slate[800];
-const background2 = tailwindColors.gray[800];
-const accentColor = tailwindColors.slate[50];
-const accentColorDark = tailwindColors.slate[100];
-const axisColor = tailwindColors.amber[500];
+const background = colors.slate[800];
+const background2 = colors.gray[800];
+const accentColor = colors.slate[50];
+const accentColorDark = colors.slate[100];
+const axisColor = colors.amber[500];
 
 const tooltipStyles = {
   ...defaultStyles,
