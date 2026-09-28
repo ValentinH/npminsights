@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { DownloadsChart } from '~/components/DownloadsChart';
-import { NpmDailyDownloads } from '~/utils/npm-api/types';
+import type { NpmDailyDownloads } from '~/utils/npm-api/types';
 
 type PackageInsightsData = {
   total: number;
@@ -79,6 +79,13 @@ export default function PackageInsights({ data }: PackageInsightsProps) {
     <>
       <section className="mb-8">
         <h2 className="mb-4 text-2xl">Downloads</h2>
+        <div className="mb-4 rounded-lg bg-gray-800 px-6 py-8 shadow-xl ring-1 ring-gray-900/5">
+          <h3 className="text-xl text-gray-100">All-time downloads</h3>
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-yellow-400 sm:text-5xl">
+            {data.total.toLocaleString('en')}
+          </p>
+          <p className="mt-2 text-sm text-gray-400">Since npm download records began</p>
+        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card title="Last day" value={data.lastDay} previousValue={data.lastDayPreviousWeek} />
           <Card title="Last week" value={data.lastWeek} previousValue={data.previousWeek} />

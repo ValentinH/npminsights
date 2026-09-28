@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.34.5",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -10,7 +11,7 @@
     "preview": "vite preview"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "24.x"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.159.10",
@@ -39,7 +40,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.0",
     "@types/d3-array": "^3.2.1",
-    "@types/node": "^22.13.0",
+    "@types/node": "^24.19.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.6.0",
@@ -48,10 +49,5 @@
     "typescript": "^5.7.3",
     "vite": "^7.3.1",
     "vite-tsconfig-paths": "^4.3.2"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   }
 }
